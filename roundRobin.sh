@@ -16,14 +16,14 @@ validateInput()
     [ ! "$words" == "3" ] && [ ! "$words" == "4" ] && \
     throwError "Data file must contain lines of 3 OR 4 arguments"               # Check average args is 3 OR 4
 
-    quantum=${2:-1}													            # Set quantum value to '1' if $2 is unset
+    quantum=${2:-1}								# Set quantum value to '1' if $2 is unset
 
     [[ ! $quantum =~ ^-?[0-9] ]] && throwError "Quantum must be an integer"     # Check quantum arg is integer
     [ $quantum -lt 0 ] && throwError "Negative time quantum not supported"      # Check quantum arg is positive
 
 }; validateInput $@
 
-exec > >(tee output.txt) >&1									                # Copy stdout to output.txt
+exec > >(tee output.txt) >&1							# Copy stdout to output.txt
 
 mapfile -t data < $1;                                                           # Map lines of file input to array
 dataRef=("${data[@]%% *}")                                                      # Create record array for process order
@@ -56,7 +56,7 @@ queue=()
 index=0
 switches=0
 
-declare -A processStatus												        # Create assoc array for process statuses
+declare -A processStatus							# Create assoc array for process statuses
 declare -A arrivalTime                                                          # Create assoc array for arrival times
 declare -A burstTime                                                            # Create assoc array for burst times
 declare -A priorityFlag                                                         # Create assoc array for priority flags
@@ -90,7 +90,7 @@ echo "T ${dataRef[@]}"
 
 until $finished
 do
-	while [ ! ${#data[@]} -eq 0 ]                                               # While processes are pending
+	while [ ! ${#data[@]} -eq 0 ]                                           # While processes are pending
 	do
 		name=(${data[0]%% *})
         arrival=${arrivalTime[$name]}
